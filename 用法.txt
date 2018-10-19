@@ -28,15 +28,15 @@ public class mingge {
     @RequestMapping(value = "/abc")
     public String curl() throws IOException {
         Map config = new HashMap<>();
-        config.put("url", "http://192.168.88.123:520/");//会话url地址
+        config.put("url", "http://www.baidu.com/");//会话url地址
         config.put("timeout", 5000);//超时时间
         config.put("contentType", "UTF-8");
         config.put("method", "post");
         //设置header;
         HashMap<String, String> headerMap = new HashMap<String, String>() {
             {
-                config.put("a", "b");//header参数，阿里的收费接口全部靠这个传参
-                config.put("c", "d");
+                 put("a", "b");//header参数，阿里的收费接口全部靠这个传参
+                 put("c", "d");
             }
         };
         config.put("header", headerMap);//开始设置
