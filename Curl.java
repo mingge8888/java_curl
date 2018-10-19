@@ -84,11 +84,12 @@ public class Curl {
 
     /**
      * @param obj 通过Map类型批量传入参数
-     *            obj.data   发送的数据
-     *            obj.timeout  超时时间
-     *            obj.contentType  输出编码
-     *            obj.method   get or post
-     *            obj.url  回话url地址
+     *            obj.data   发送的数据 Map<String,String>
+     *            obj.timeout  超时时间 String
+     *             obj.header  支持头部 Map<String,String>
+     *            obj.contentType  输出编码 String
+     *            obj.method   get or post String
+     *            obj.url  回话url地址  String
      */
     public Curl(Map<String, Object> obj) throws IOException {//回话，核心函数
         try {
