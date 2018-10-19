@@ -1,5 +1,5 @@
 用法 直接复制在进控制器测试，
-java类插件，高仿前端版的ajax参数，用Map类型进行控制参数
+java类插件，高仿前端版的JQ的ajax参数方式，用Map类型进行控制参数
 可读取http和https 支持get 和post ,上传文件等等操作
 一般用于远程读取url,爬虫，阿里API接口等功能
 必须导入httpclient4以上依赖
