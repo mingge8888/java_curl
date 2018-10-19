@@ -1,0 +1,50 @@
+用法 直接复制在进控制器测试，
+java类插件，高仿前端版的ajax参数，用Map类型进行控制参数
+可读取http和https 支持get 和post ,上传文件等等操作
+一般用于远程读取url,爬虫，阿里API接口等功能
+必须导入httpclient4以上依赖
+
+<dependency>
+    <groupId>org.apache.httpcomponents</groupId>
+    <artifactId>httpclient</artifactId>
+     <version>4.5.3</version>
+</dependency>
+ 
+@Controller
+ 
+
+@RequestMapping("")
+public class mingge {
+    @ResponseBody
+    @RequestMapping(value = "/abc")
+    public String curl() throws IOException {
+        Map config = new HashMap<>();
+        config.put("url", "http://192.168.88.123:520/");//会话url地址
+        config.put("timeout", 5000);//超时时间
+        config.put("contentType", "UTF-8");
+        config.put("method", "post");
+        //设置header;
+        HashMap<String, String> headerMap = new HashMap<String, String>() {
+            {
+                config.put("a", "b");//header参数，阿里的收费接口全部靠这个传参
+                config.put("c", "d");
+            }
+        };
+        config.put("header", headerMap);//开始设置
+
+
+
+        //设置发送数据;
+        HashMap<String, String> dataMap = new HashMap<String, String>() {
+            {
+                put("mingge", "帅狗叼"); //get or post  传的参数
+                put("mingge2", "123");
+            }
+        };
+        config.put("data", dataMap);//设置发送数据;
+
+
+
+        Curl CurlFn = new Curl(config);  //类执行开始
+        return CurlFn.fetch(); //返回数据
+    }
