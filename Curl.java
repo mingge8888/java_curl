@@ -1,6 +1,5 @@
 package com.mingge.pingo.Utils;
-
-import org.apache.http.Consts;
+ import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
@@ -12,18 +11,18 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import java.io.IOException;
+ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
 
 /**
  * @Description: 后端回话远程读取url 支持http和https，跟jq的ajax用法是非常相似的，方便使用，
- *           国际规范必须导入httpclient4以上依赖
- *           <dependency>
- *             <groupId>org.apache.httpcomponents</groupId>
- *             <artifactId>httpclient</artifactId>
- *             <version>4.5.3</version>
- *            </dependency>
+ * 国际惯例必须导入httpclient4以上依赖
+ * <dependency>
+ * <groupId>org.apache.httpcomponents</groupId>
+ * <artifactId>httpclient</artifactId>
+ * <version>4.5.3</version>
+ * </dependency>
  * @Author: 开发作者：明哥
  * @CreateDate: 2018/10/19
  * @Version: 小牛试刀，第一个插件项目1.0
@@ -71,12 +70,16 @@ public class Curl {
 
 
     protected void addHeader(HttpGet get, Map<String, String> params) {//设置头，get
+        if (params == null) return;
         for (Map.Entry<String, String> entry : params.entrySet()) {
             get.addHeader(entry.getKey(), entry.getValue());
+            System.out.println(entry.getKey());
+            System.out.println(entry.getValue());
         }
     }
 
     protected void addHeader(HttpPost post, Map<String, String> params) {//设置头，POST
+        if (params == null) return;
         for (Map.Entry<String, String> entry : params.entrySet()) {
             post.addHeader(entry.getKey(), entry.getValue());
         }
@@ -86,7 +89,7 @@ public class Curl {
      * @param obj 通过Map类型批量传入参数
      *            obj.data   发送的数据 Map<String,String>
      *            obj.timeout  超时时间 String
-     *             obj.header  支持头部 Map<String,String>
+     *            obj.header  支持头部 Map<String,String>
      *            obj.contentType  输出编码 String
      *            obj.method   get or post String
      *            obj.url  回话url地址  String
@@ -96,14 +99,15 @@ public class Curl {
             obj = extend(obj);//参数扩展
             Map<String, String> sendData = (Map<String, String>) obj.get("data");
             HttpEntity parameter;
-            if (sendData != null) {
-                parameter = handleParameter(sendData, Consts.UTF_8);//传递参
-            } else {
+            if (sendData == null) {
                 parameter = null;
+            } else {
+                parameter = handleParameter(sendData, Consts.UTF_8);//传递参
             }
             String url = obj.get("url").toString(); //网址
             int timeout = (int) (obj.get("timeout"));//超时
             String method = obj.get("method").toString().toLowerCase();
+
             CloseableHttpClient httpClient;
             httpClient = HttpClients.createDefault();//创建HttpClients
             CloseableHttpResponse response;//公共 结果变量
@@ -121,8 +125,9 @@ public class Curl {
                 if (parameter != null) {
                     url = url + (url.contains("?") ? "&" : "?") + EntityUtils.toString(parameter);
                 }
-                System.out.println(url);
+
                 HttpGet httpGet = new HttpGet(url);
+
                 addHeader(httpGet, (Map<String, String>) obj.get("header"));
                 httpGet.setConfig(getTimeout(timeout));//设置超时
                 response = httpClient.execute(httpGet);
@@ -133,6 +138,7 @@ public class Curl {
                 if (codes < 201) {
                     HttpEntity entity = response.getEntity();
                     String contentType = obj.get("contentType").toString();
+                    //import org.apache.commons.lang.StringUtils;
                     result = EntityUtils.toString(entity, contentType); //得到数据
                     error = 0; //没有错误，并成功返回
                     return;
@@ -161,4 +167,5 @@ public class Curl {
     public int getError() {//返回错误代码
         return error;
     }
+
 }
