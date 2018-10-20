@@ -1,5 +1,6 @@
 package com.mingge.pingo.Utils;
- import org.apache.http.Consts;
+
+import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
@@ -11,7 +12,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
- import java.io.IOException;
+
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
 
@@ -55,13 +57,11 @@ public class Curl {
                 .build();
     }
 
-    protected HttpEntity handleParameter(Map<String, String> params, Charset code) throws IOException { //处理data参数
+    protected HttpEntity handleParameter(Map<String, String> params, Charset code) { //处理data参数
         List<NameValuePair> list = new ArrayList<>();
-
         if (params == null) {
             return null;
         }
-
         for (Map.Entry<String, String> entry : params.entrySet()) {
             list.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
         }
@@ -94,7 +94,7 @@ public class Curl {
      *            obj.method   get or post String
      *            obj.url  回话url地址  String
      */
-    public Curl(Map<String, Object> obj) throws IOException {//回话，核心函数
+    public Curl(Map<String, Object> obj) {//回话，核心函数
         try {
             obj = extend(obj);//参数扩展
             Map<String, String> sendData = (Map<String, String>) obj.get("data");
@@ -152,7 +152,8 @@ public class Curl {
             if (httpClient != null) {
                 httpClient.close();
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
+            System.out.println("发生错误" + e);
             e.printStackTrace();
             error = 400;
         }
